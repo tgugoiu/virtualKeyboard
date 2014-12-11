@@ -1,7 +1,7 @@
 using UnityEngine;
 
 
-public class Key {
+public class Key : MonoBehaviour {
 	private TextMesh tm;
 	private string id;
 	
@@ -11,7 +11,7 @@ public class Key {
 	private GameObject cube;
 	private TextMesh textMesh;
 	
-	public Key(GameObject parent, string id, float positionOffset){
+	public void initialize(GameObject parent, string id, float positionOffset){
 		Debug.Log("CREATING OBJECT " + id);
 		cube = GameObject.CreatePrimitive(PrimitiveType.Cube);
 		cube.name = ("cube_new_" + id);
@@ -21,7 +21,7 @@ public class Key {
 		float positionZ = parent.transform.position.z + 6 - (positionOffset);
 		
 		cube.transform.localPosition = new Vector3(positionX, positionY, positionZ);
-		cube.renderer.sharedMaterial.color = Color.cyan;
+		// cube.renderer.sharedMaterial.color = Color.cyan;
 		cube.transform.localScale = new Vector3(0.5f,0.5f,0.5f);
 		cube.transform.parent = parent.transform;
 		
@@ -42,9 +42,10 @@ public class Key {
 		this.id = id;
 		this.keyWidth = 10;
 		this.keySpaceWidth = 0;
+		setColorGreen();
 	}
 	
-	public Key(TextMesh tm, string id, float keyWidth, float keySpaceWidth){
+	public void populate(TextMesh tm, string id, float keyWidth, float keySpaceWidth){
 		this.tm = tm;
 		this.id = id;
 		this.keyWidth = keyWidth;
@@ -69,5 +70,15 @@ public class Key {
 	
 	public float getKeySpaceWidth(){
 		return this.keySpaceWidth;
+	}
+
+	void Update(){
+		// Debug.Log("KEY UPDATE");
+		if (Input.GetKeyDown (id)) {
+			setColorRed();
+		}
+		if (Input.GetKeyUp (id)) {
+			setColorGreen();
+		}
 	}
 }

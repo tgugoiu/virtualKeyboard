@@ -10,6 +10,8 @@ public class KeyboardRowComponent : MonoBehaviour {
 	private float totalRowWidth;
 	private IList<String> keys = new List<String>();
 	private int keyCount = 0;
+
+	private GameObject go;
 	
 	public KeyboardRowComponent(){
 		this.rowHeight = 10;
@@ -25,6 +27,18 @@ public class KeyboardRowComponent : MonoBehaviour {
 	
 	public void setKeys(String[] keySet) {
 		keys = keySet;
+
+		int offset = 0;
+		foreach (string s in keys){
+			// new Key(this.go, s, offset);
+			Key newKey = this.go.AddComponent<Key>();
+			newKey.initialize(this.go, s, offset);
+			offset += 1;
+		}
+	}
+
+	public void setGameObject(GameObject gameObject){
+		this.go = gameObject; 
 	}
 	
 	public IList<String> getKeys() {
