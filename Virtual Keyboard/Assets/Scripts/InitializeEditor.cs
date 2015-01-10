@@ -1,4 +1,5 @@
-/*using UnityEngine;
+#if UNITY_EDITOR
+using UnityEngine;
 using UnityEditor;
 using System.Collections;
 using System;
@@ -9,4 +10,5 @@ public class Init {
 	
 	static Init() {
 	}
-}*/
+}
+#endif
