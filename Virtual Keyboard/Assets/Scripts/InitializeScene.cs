@@ -23,7 +23,8 @@ public class InitializeScene : MonoBehaviour {
 		keyboardObj.name = "ScriptKeyboard";
 		keyboardObj.AddComponent ("KeyboardComponent");
 		keyboardObj.transform.parent = user.transform;
-		keyboardObj.transform.localPosition = new Vector3 (0, -1.8f, 0);
+		keyboardObj.transform.localPosition = new Vector3 (0, -1.8f, 2);
+		//keyboardObj.transform.localRotation = Quaternion.Euler (0, 0, 0);
 		
 		GameObject keyboardRow1 = new GameObject ();
 		keyboardRow1.transform.parent = keyboardObj.transform;
