@@ -14,7 +14,7 @@ public class MovementScript : MonoBehaviour {
 	float incrementAmount = 20;
 	void Start () {
 		keyboard = GameObject.Find ("ScriptKeyboard");
-		keyboard.transform.localRotation = Quaternion.Euler (0, rotationX - 90, 0);
+		keyboard.transform.localRotation = Quaternion.Euler (0, rotationX - 90, 15);
 //		user = GameObject.Find ("User");
 	
 	}
@@ -22,8 +22,6 @@ public class MovementScript : MonoBehaviour {
 	// Update is called once per frame
 	void Update () {
 		rotationX += Input.GetAxis ("Mouse X");
-
-		//keyboard.transform.localRotation = Quaternion.Euler (0, rotationX - 90, 0);
 
 		// Debug.Log (rotationX);
 		var sinOfAngle = Mathf.Sin((rotationX * Mathf.PI)/180);
