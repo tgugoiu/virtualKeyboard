@@ -4,82 +4,60 @@ using System.Collections;
 public class panelBehaviorScript : MonoBehaviour {
 
 	GameObject user;
-	GameObject forceField;
-	TextMesh panelText;
+	public GameObject forceField;
+	public string panelRequiredText;
+	public float interactionRange;
+	TextMesh promptTextMesh;
+	TextMesh inputTextMesh;
 	// var panelText;
 
 	// Use this for initialization
 	void Start () {
 		user = GameObject.Find ("User");
-		forceField = GameObject.Find ("ForceField");
+		Transform prompts  = transform.Find("Prompt");
+		Transform inputs  = transform.Find("Input");
 
-		var tryToFindTextMesh = GameObject.Find ("Input1");
-		panelText = (TextMesh)tryToFindTextMesh.GetComponent(typeof(TextMesh));
+		if (prompts) {
+			promptTextMesh = prompts.GetComponent<TextMesh>();
+		}
+		if (inputs) {
+			inputTextMesh = inputs.GetComponent<TextMesh>();
+		}
 
-		// panelText = (TextMesh)  GameObject.Find ("NewText");
+		promptTextMesh.text = panelRequiredText;
 	}
 	
 	// Update is called once per frame
 	void Update () {
 		float distance =  + Mathf.Sqrt(Mathf.Pow ((user.transform.position.x - transform.position.x), 2) + Mathf.Pow((user.transform.position.z - transform.position.z), 2));
 
-		if (distance < 10) {
+		if (distance <= interactionRange) {
+			Debug.Log ("In Panel Range");
+			string currentText = inputTextMesh.text;
+			int currentTextLength = currentText.Length;
+			char nextChar;
 
-			// string[] keys = {"!", "@", "#", "$", "%"};
-			// Debug.Log(distance);
-
-			string[] keys = {"`", "1", "2", "3", "4", "5", "6", "7", "8", "9", "0", "-", "=",
-				"q", "w", "e", "r", "t", "y", "u", "i", "o", "p", "[", "]", "\\",
-				"a", "s", "d", "f", "g", "h", "j", "k", "l", ";", "'",
-				"z", "x", "c", "v", "b", "n", "m", ",", ".", "/",
-				"space"};
-
-			string[] keys2 = {"1", "2", "3", "4", "5"};
-
-			// if (Input.GetKeyDown (KeyCode.LeftShift)) {
-				
-				if (Input.GetKeyUp ("1")) {
-					Debug.Log("here");
-					panelText.text = panelText.text + "!";
-				}
-				if (Input.GetKeyUp ("2")) {
-					panelText.text = panelText.text + "@";
-				}
-				if (Input.GetKeyUp ("3")) {
-					panelText.text = panelText.text + "#";
-				}
-				if (Input.GetKeyUp ("4")) {
-					panelText.text = panelText.text + "$";
-				}
-				if (Input.GetKeyUp ("5")) {
-					panelText.text = panelText.text + "%";
-				}
-
-				/*
-
-				foreach (string s in keys){
-					if (Input.GetKeyUp (s)) {
-						if (Input.GetKeyUp (KeyCode.LeftShift)) {
-							panelText.text = panelText.text + s;
-							CamMouse.lookAtPanel = !CamMouse.lookAtPanel;
-						}
-						panelText.text = panelText.text + s;
-					}
-				}
-				*/
-			// }
-
-
-
-
-			/*
-			if (Input.GetKeyDown ("e")) {
-				Debug.Log ("INTERACTION ALLOWED");
-				// panelText.text = panelText.text + "E";
-				panelText.text = panelText.text + "E";
-				forceField.transform.Translate(0, 3, 0);
+			if( currentTextLength >= panelRequiredText.Length ) {
+				return;
 			}
-			*/
+
+			if( currentTextLength > 0 ) {
+				int nextPos = currentText.Length;
+				nextChar = panelRequiredText[nextPos];
+			}
+			else {
+				nextChar = panelRequiredText[0];
+			}
+
+			string currentInput = Input.inputString;
+			if( currentInput.Length > 0 && currentInput[0].Equals(nextChar) ) {
+				inputTextMesh.text = currentText + nextChar;
+			}
+
+			if( inputTextMesh.text.Equals(panelRequiredText) ) {
+				forceField.SetActive(!forceField.activeSelf);
+				inputTextMesh.text = "";
+			}
 		}
 	}
 }
