@@ -24,7 +24,6 @@ public class KeyActivator : MonoBehaviour
 	void Update ()
 	{
 		if (Input.GetKeyDown (keyId)) {
-			Debug.Log (keyId);
 			textMesh.color = activeColor;
 		} else if (Input.GetKeyUp (keyId)) 
 		{
