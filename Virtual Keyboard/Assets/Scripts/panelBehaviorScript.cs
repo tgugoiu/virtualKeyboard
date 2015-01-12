@@ -3,17 +3,15 @@ using System.Collections;
 
 public class panelBehaviorScript : MonoBehaviour {
 
-	GameObject user;
+	public GameObject user;
 	public GameObject forceField;
 	public string panelRequiredText;
 	public float interactionRange;
 	TextMesh promptTextMesh;
 	TextMesh inputTextMesh;
-	// var panelText;
 
 	// Use this for initialization
 	void Start () {
-		user = GameObject.Find ("User");
 		Transform prompts  = transform.Find("Prompt");
 		Transform inputs  = transform.Find("Input");
 
@@ -32,7 +30,6 @@ public class panelBehaviorScript : MonoBehaviour {
 		float distance =  + Mathf.Sqrt(Mathf.Pow ((user.transform.position.x - transform.position.x), 2) + Mathf.Pow((user.transform.position.z - transform.position.z), 2));
 
 		if (distance <= interactionRange) {
-			Debug.Log ("In Panel Range");
 			string currentText = inputTextMesh.text;
 			int currentTextLength = currentText.Length;
 			char nextChar;
