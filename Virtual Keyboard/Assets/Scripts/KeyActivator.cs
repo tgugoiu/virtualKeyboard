@@ -30,5 +30,18 @@ public class KeyActivator : MonoBehaviour
 			textMesh.color = baseColor;
 		}
 	}
+
+	void OnCollisionEnter(Collision collision) {
+		if (collision.gameObject.name == "Plane")
+			return;
+		Debug.Log ("Something hit the " + keyId + " key");
+		textMesh.color = activeColor;
+	}
+
+	void OnCollisionExit(Collision collision) {
+		textMesh.color = baseColor;
+	}
+
+
 }
 

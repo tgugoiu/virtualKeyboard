@@ -14,5 +14,9 @@ public class InteractionPanel : MonoBehaviour
 		{
 	
 		}
+
+	void onCollisionEnter(Collision collision) {
+		Debug.Log ("Something hit the keyboard");
+	}
 }
 

@@ -16,5 +16,9 @@ public class VirtualKeyboard : MonoBehaviour
 	{
 		
 	}
+
+	void OnCollisionEnter(Collision collision) {
+		Debug.Log ("Something hit the keyboard");
+	}
 }
 
