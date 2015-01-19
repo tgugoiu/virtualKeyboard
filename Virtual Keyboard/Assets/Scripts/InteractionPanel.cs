@@ -4,12 +4,12 @@ using System.Collections;
 public class InteractionPanel : MonoBehaviour
 {
 	public Collider[] collisionExclusionsList;
-		// Use this for initialization
+
 	private BoxCollider[] childColliders;
+
+	// Use this for initialization
 	void Start ()
 	{
-		// collisionExclusionsList[collisionExclusionsList.Length] = user.collider;
-		// gameObject.GetComponentsInChildren (BoxCollider);
 		childColliders = gameObject.GetComponentsInChildren<BoxCollider>() as BoxCollider[];
 		foreach( Collider childCollider in childColliders ) {
 			if( childCollider.enabled == true ) {
