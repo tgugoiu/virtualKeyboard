@@ -3,6 +3,9 @@ using System.Collections;
 
 public class KeyActivator : MonoBehaviour
 {
+	public delegate void KeyLeapPressAction(string keyId, Collision collision);
+	public static event KeyLeapPressAction OnKeyLeapPressed;
+
 	public Color activeColor;
 	public string keyId;
 
@@ -24,22 +27,27 @@ public class KeyActivator : MonoBehaviour
 	void Update ()
 	{
 		if (Input.GetKeyDown (keyId)) {
-			textMesh.color = activeColor;
+			setColor(activeColor);
 		} else if (Input.GetKeyUp (keyId)) 
 		{
-			textMesh.color = baseColor;
+			setColor(baseColor);
 		}
 	}
 
 	void OnCollisionEnter(Collision collision) {
 		if (collision.gameObject.name == "Plane")
 			return;
+		OnKeyLeapPressed (keyId, collision);
 		Debug.Log ("Something hit the " + keyId + " key");
-		textMesh.color = activeColor;
+		setColor(activeColor);
 	}
 
 	void OnCollisionExit(Collision collision) {
-		textMesh.color = baseColor;
+		setColor(baseColor);
+	}
+
+	void setColor(Color color) {
+		textMesh.color = color;
 	}
 
 
