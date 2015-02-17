@@ -3,8 +3,8 @@ using System.Collections;
 
 public class KeyActivator : MonoBehaviour
 {
-	public delegate void KeyLeapPressAction(string keyId, Collision collision);
-	public delegate void KeyLeapReleaseAction(string keyId, Collision collision);
+	public delegate void KeyLeapPressAction(string keyId);
+	public delegate void KeyLeapReleaseAction(string keyId);
 	public static event KeyLeapPressAction OnKeyLeapPressed;
 	public static event KeyLeapReleaseAction OnKeyLeapReleased;
 
@@ -29,9 +29,11 @@ public class KeyActivator : MonoBehaviour
 	void Update ()
 	{
 		if (Input.GetKeyDown (keyId)) {
+			OnKeyLeapPressed (keyId);
 			setColor(activeColor);
 		} else if (Input.GetKeyUp (keyId)) 
 		{
+			OnKeyLeapReleased (keyId);
 			setColor(baseColor);
 		}
 	}
@@ -39,7 +41,7 @@ public class KeyActivator : MonoBehaviour
 	void OnCollisionEnter(Collision collision) {
 		if (collision.gameObject.name == "Plane")
 			return;
-		OnKeyLeapPressed (keyId, collision);
+		OnKeyLeapPressed (keyId);
 		Debug.Log ("Something hit the " + keyId + " key");
 		setColor(activeColor);
 	}
@@ -47,7 +49,7 @@ public class KeyActivator : MonoBehaviour
 	void OnCollisionExit(Collision collision) {
 		if (collision.gameObject.name == "Plane")
 			return;
-		OnKeyLeapReleased (keyId, collision);
+		OnKeyLeapReleased (keyId);
 		setColor(baseColor);
 	}
 

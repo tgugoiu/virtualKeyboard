@@ -38,7 +38,7 @@ public class InteractionPanel : MonoBehaviour
 		Debug.Log ("Something hit the keyboard");
 	}
 
-	void onKeyLeapReleased(string keyId, Collision collision) {
+	void onKeyLeapReleased(string keyId) {
 		string upperKeyId = keyId.ToUpper ();
 		if (upperKeyId.Equals (KeyCode.W.ToString ())) {
 			playerController.moveForward = false;
@@ -51,7 +51,7 @@ public class InteractionPanel : MonoBehaviour
 		}
 	}
 
-	void onKeyLeapPressed(string keyId, Collision collision) {
+	void onKeyLeapPressed(string keyId) {
 		string upperKeyId = keyId.ToUpper ();
 		if (upperKeyId.Equals (KeyCode.W.ToString ())) {
 			playerController.moveForward = true;
