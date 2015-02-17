@@ -4,7 +4,9 @@ using System.Collections;
 public class KeyActivator : MonoBehaviour
 {
 	public delegate void KeyLeapPressAction(string keyId, Collision collision);
+	public delegate void KeyLeapReleaseAction(string keyId, Collision collision);
 	public static event KeyLeapPressAction OnKeyLeapPressed;
+	public static event KeyLeapReleaseAction OnKeyLeapReleased;
 
 	public Color activeColor;
 	public string keyId;
@@ -43,6 +45,9 @@ public class KeyActivator : MonoBehaviour
 	}
 
 	void OnCollisionExit(Collision collision) {
+		if (collision.gameObject.name == "Plane")
+			return;
+		OnKeyLeapReleased (keyId, collision);
 		setColor(baseColor);
 	}
 
