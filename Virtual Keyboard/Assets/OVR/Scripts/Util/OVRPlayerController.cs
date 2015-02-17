@@ -89,6 +89,7 @@ public class OVRPlayerController : MonoBehaviour
 	private float MoveScaleMultiplier = 1.0f;
 	private float RotationScaleMultiplier = 1.0f;
 	private bool  SkipMouseRotation = false;
+	private bool  SkipMouseYRotation = false;
 	private bool  HaltUpdateMovement = false;
 	private bool prevHatLeft = false;
 	private bool prevHatRight = false;
@@ -266,8 +267,12 @@ public class OVRPlayerController : MonoBehaviour
 
 		float rotateInfluence = SimulationRate * Time.deltaTime * RotationAmount * RotationScaleMultiplier;
 
-		if (!SkipMouseRotation)
+		if (!SkipMouseRotation){
 			euler.y += Input.GetAxis("Mouse X") * rotateInfluence * 3.25f;
+			if (!SkipMouseYRotation){
+				euler.x += Input.GetAxis("Mouse Y") * rotateInfluence * 3.25f * (-1);
+			}
+		}
 
 		moveInfluence = SimulationRate * Time.deltaTime * Acceleration * 0.1f * MoveScale * MoveScaleMultiplier;
 
@@ -372,6 +377,24 @@ public class OVRPlayerController : MonoBehaviour
 	public void SetSkipMouseRotation(bool skipMouseRotation)
 	{
 		SkipMouseRotation = skipMouseRotation;
+	}
+	
+	/// <summary>
+	/// Gets the allow mouse Y rotation.
+	/// </summary>
+	/// <param name="skipMouseYRotation">Allow mouse rotation.</param>
+	public void GetSkipMouseYRotation(ref bool skipMouseYRotation)
+	{
+		skipMouseYRotation = skipMouseYRotation;
+	}
+
+	/// <summary>
+	/// Sets the allow mouse Y rotation.
+	/// </summary>
+	/// <param name="skipMouseYRotation">If set to <c>true</c> allow mouse rotation.</param>
+	public void SetSkipMouseYRotation(bool skipMouseYRotation)
+	{
+		skipMouseYRotation = skipMouseYRotation;
 	}
 
 	/// <summary>
