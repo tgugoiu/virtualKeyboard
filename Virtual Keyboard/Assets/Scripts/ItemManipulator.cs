@@ -24,33 +24,42 @@ public class ItemManipulator : MonoBehaviour
 	// Update is called once per frame
 	void Update ()
 	{
-		translateHand ();
-		rotateHand();
+		translateItem ();
+		rotateItem();
+		scaleItem();
 	}
 
 	void OnCollisionEnter(Collision collision) {
 		trackingActive = true;
-		setColor (Color.blue);
 	}
 
-	void translateHand() {
+	void translateItem() {
 		if (!trackingActive) return;
 		Frame currentFrame = controller.Frame ();
 		Frame oldFrame = controller.Frame (1);
 
-		// Translation
 		Vector translation = currentFrame.Translation (oldFrame);
 		Vector3 unityTranslationVector = calculateUnityTranslationVector (translation);
 		this.transform.Translate (unityTranslationVector);
 	}
 
-	void rotateHand() {
+	void rotateItem() {
+		if (!trackingActive) return;
 		Frame currentFrame = controller.Frame ();
 		Frame prevFrame = controller.Frame (5);
 		float leapRotationAngle = currentFrame.RotationAngle(prevFrame, Vector.YAxis); 
 
 		float unityRotationAngle = leapRotationAngle * (180f/Mathf.PI);
 		this.transform.Rotate(new Vector3(0f, unityRotationAngle, 0f));
+	}
+
+	void scaleItem() {
+		if (!trackingActive) return;
+		Frame currentFrame = controller.Frame ();
+		Frame prevFrame = controller.Frame (5);
+		float leapScaleFactor = 0.001f*(currentFrame.ScaleFactor(prevFrame)-1f);
+		Vector3 scalingVector = new Vector3(leapScaleFactor, leapScaleFactor, leapScaleFactor);
+		this.transform.localScale += (scalingVector);
 	}
 
 	Vector3 calculateUnityTranslationVector(Vector vec) {
