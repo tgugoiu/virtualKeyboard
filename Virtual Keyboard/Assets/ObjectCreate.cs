@@ -7,7 +7,7 @@ public class ObjectCreate : MonoBehaviour {
 	void Start () {
 		LeapGestureInit.CircularGestureTriggered += HandleCircularGestureTriggered;
 	}
-
+	
 	void HandleCircularGestureTriggered (object sender, System.EventArgs e)
 	{
 		Debug.Log ("We're creating an object!!");
