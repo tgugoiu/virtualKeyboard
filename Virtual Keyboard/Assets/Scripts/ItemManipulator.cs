@@ -24,7 +24,8 @@ public class ItemManipulator : MonoBehaviour
 	// Update is called once per frame
 	void Update ()
 	{
-		trackHand ();
+		translateHand ();
+		rotateHand();
 	}
 
 	void OnCollisionEnter(Collision collision) {
@@ -32,16 +33,27 @@ public class ItemManipulator : MonoBehaviour
 		setColor (Color.blue);
 	}
 
-	void trackHand() {
+	void translateHand() {
 		if (!trackingActive) return;
 		Frame currentFrame = controller.Frame ();
 		Frame oldFrame = controller.Frame (1);
+
+		// Translation
 		Vector translation = currentFrame.Translation (oldFrame);
-		Vector3 unityTranslationVector = calculateUnityVector (translation);
+		Vector3 unityTranslationVector = calculateUnityTranslationVector (translation);
 		this.transform.Translate (unityTranslationVector);
 	}
 
-	Vector3 calculateUnityVector(Vector vec) {
+	void rotateHand() {
+		Frame currentFrame = controller.Frame ();
+		Frame prevFrame = controller.Frame (5);
+		float leapRotationAngle = currentFrame.RotationAngle(prevFrame, Vector.YAxis); 
+
+		float unityRotationAngle = leapRotationAngle * (180f/Mathf.PI);
+		this.transform.Rotate(new Vector3(0f, unityRotationAngle, 0f));
+	}
+
+	Vector3 calculateUnityTranslationVector(Vector vec) {
 		float movementIncrementX = vec.x != 0 && Mathf.Abs(vec.x) > 5 ? 0.01f : 0;
 		float movementIncrementY = vec.y != 0 && Mathf.Abs (vec.y) > 5 ? 0.01f : 0;
 		float movementIncrementZ = vec.z != 0 && Mathf.Abs(vec.z) > 5 ? 0.01f : 0;
@@ -54,10 +66,10 @@ public class ItemManipulator : MonoBehaviour
 		                                  zDirection * movementIncrementZ);
 
 		return unityVector;
+	}
 
-		// Vector3 unityVector = new Vector3 (vec.x, vec.y, vec.z);
-		// unityVector.Scale (new Vector3 (0.01f, 0.01f, 0.01f));
-
+	float calculateUnityRotationAngle(float leapRotationAngle) {
+		return 0f;
 	}
 
 	void OnCollisionExit(Collision collision) {
