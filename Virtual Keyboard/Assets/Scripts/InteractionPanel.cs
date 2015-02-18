@@ -13,7 +13,6 @@ public class InteractionPanel : MonoBehaviour
 	// Use this for initialization
 	void Start ()
 	{
-		//Debug.Log ( user.get
 		playerController = user.GetComponent<OVRPlayerController>() as OVRPlayerController;
 		Debug.Log (playerController);
 		KeyActivator.OnKeyLeapPressed += onKeyLeapPressed;
