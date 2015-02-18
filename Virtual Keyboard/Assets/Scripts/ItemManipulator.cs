@@ -4,53 +4,55 @@ using Leap;
 
 public class ItemManipulator : MonoBehaviour
 {
-	public delegate void KeyLeapPressAction(string keyId);
-	public delegate void KeyLeapReleaseAction(string keyId);
-	public static event KeyLeapPressAction OnKeyLeapPressed;
-	public static event KeyLeapReleaseAction OnKeyLeapReleased;
+	private GameObject selectedItem;
 
-	private TextMesh textMesh;
-	private Color baseColor;
 	private Controller controller;
 
 	private bool trackingActive = false;
 
 	// Use this for initialization
-	void Start ()
-	{
+	void Start () {
 		controller = new Controller ();
+		ItemSelection.OnItemSelected += updateSelectedItem;
 	}
 
 	// Update is called once per frame
 	void Update ()
 	{
-		translateHand ();
-		rotateHand();
+		translateItem ();
+		rotateItem();
+		scaleItem();
 	}
 
-	void OnCollisionEnter(Collision collision) {
-		trackingActive = true;
-		setColor (Color.blue);
+	void updateSelectedItem(GameObject newlySelectedItem) {
+		Debug.Log("newly selected item: " + newlySelectedItem.name);
+		selectedItem = newlySelectedItem;
 	}
 
-	void translateHand() {
-		if (!trackingActive) return;
+	void translateItem() {
 		Frame currentFrame = controller.Frame ();
 		Frame oldFrame = controller.Frame (1);
 
-		// Translation
 		Vector translation = currentFrame.Translation (oldFrame);
 		Vector3 unityTranslationVector = calculateUnityTranslationVector (translation);
-		this.transform.Translate (unityTranslationVector);
+		selectedItem.transform.Translate (unityTranslationVector);
 	}
 
-	void rotateHand() {
+	void rotateItem() {
 		Frame currentFrame = controller.Frame ();
 		Frame prevFrame = controller.Frame (5);
 		float leapRotationAngle = currentFrame.RotationAngle(prevFrame, Vector.YAxis); 
 
 		float unityRotationAngle = leapRotationAngle * (180f/Mathf.PI);
-		this.transform.Rotate(new Vector3(0f, unityRotationAngle, 0f));
+		selectedItem.transform.Rotate(new Vector3(0f, unityRotationAngle, 0f));
+	}
+
+	void scaleItem() {
+		Frame currentFrame = controller.Frame ();
+		Frame prevFrame = controller.Frame (5);
+		float leapScaleFactor = 0.001f*(currentFrame.ScaleFactor(prevFrame)-1f);
+		Vector3 scalingVector = new Vector3(leapScaleFactor, leapScaleFactor, leapScaleFactor);
+		selectedItem.transform.localScale += (scalingVector);
 	}
 
 	Vector3 calculateUnityTranslationVector(Vector vec) {
@@ -71,13 +73,6 @@ public class ItemManipulator : MonoBehaviour
 	float calculateUnityRotationAngle(float leapRotationAngle) {
 		return 0f;
 	}
-
-	void OnCollisionExit(Collision collision) {
-	}
-
-	void setColor(Color color) {
-	}
-
 
 }
 
