@@ -21,7 +21,7 @@ public class LeapGestures : MonoBehaviour {
 	void Start () {
 		interactionPanels = GameObject.FindGameObjectsWithTag("InteractionPanel");
 		foreach(GameObject interactionPanel in interactionPanels) {
-			interactionPanel.SetActive(false);
+			// interactionPanel.SetActive(false);
 		}
 
 		leapController.EnableGesture (Leap.Gesture.GestureType.TYPECIRCLE);
